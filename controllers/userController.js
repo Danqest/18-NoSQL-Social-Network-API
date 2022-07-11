@@ -19,22 +19,7 @@ module.exports = {
   // Create a user
   createUser(req, res) {
     User.create(req.body)
-      .then((user) => {
-        return Post.findOneAndUpdate(
-          { _id: req.body.postId },
-          { $push: { comments: comment._id } },
-          { new: true }
-        );
-      })
-      .then((post) =>
-        !post
-          ? res
-              .status(404)
-              .json({ message: 'comment created, but no posts with this ID' })
-          : res.json({ message: 'comment created' })
-      )
-      .catch((err) => {
-        console.error(err);
-      });
+      .then((dbUserData) => res.json(dbUserData))
+      .catch((err) => res.status(500).json(err));
   },
 };
